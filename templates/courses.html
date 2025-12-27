@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}All Courses - LearnHub{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">All Courses</h1>
+
+<!-- Search and Filter -->
+<div class="row mb-4">
+    <div class="col-md-4">
+        <input type="text" class="form-control" placeholder="Search courses...">
+    </div>
+    <div class="col-md-4">
+        <select class="form-select">
+            <option selected>All Categories</option>
+            <option value="programming">Programming</option>
+            <option value="web">Web Development</option>
+            <option value="data">Data Science</option>
+            <option value="cloud">Cloud Computing</option>
+        </select>
+    </div>
+</div>
+
+<!-- Courses Grid -->
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    {% for course in courses %}
+    <div class="col">
+        <div class="card course-card h-100">
+            <div class="card-body">
+                <span class="badge bg-primary category-badge">{{ course.category }}</span>
+                <h5 class="card-title mt-2">{{ course.title }}</h5>
+                <p class="card-text">{{ course.description[:150] }}...</p>
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="text-muted"><small>By {{ course.instructor.username }}</small></span>
+                    <span class="badge bg-secondary">{{ course.enrollments|length }} enrolled</span>
+                </div>
+            </div>
+            <div class="card-footer bg-transparent">
+                <div class="d-flex justify-content-between">
+                    <a href="{{ url_for('course_detail', course_id=course.id) }}" class="btn btn-outline-primary btn-sm">View Details</a>
+                    {% if course.id in enrolled_course_ids %}
+                    <span class="badge bg-success">Enrolled</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% if not courses %}
+<div class="text-center py-5">
+    <h4>No courses available yet</h4>
+    <p class="text-muted">Check back soon for new courses!</p>
+</div>
+{% endif %}
+{% endblock %}

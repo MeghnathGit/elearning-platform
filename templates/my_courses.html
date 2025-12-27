@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}My Courses - LearnHub{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">My Courses</h1>
+
+{% if courses %}
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    {% for course in courses %}
+    <div class="col">
+        <div class="card course-card h-100">
+            <div class="card-body">
+                <span class="badge bg-primary category-badge">{{ course.category }}</span>
+                <h5 class="card-title mt-2">{{ course.title }}</h5>
+                <p class="card-text">{{ course.description[:100] }}...</p>
+                <div class="progress mb-2" style="height: 8px;">
+                    <div class="progress-bar" role="progressbar" style="width: 30%;"></div>
+                </div>
+                <small class="text-muted">30% completed</small>
+            </div>
+            <div class="card-footer bg-transparent">
+                <a href="{{ url_for('course_detail', course_id=course.id) }}" class="btn btn-primary btn-sm">Continue Learning</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="text-center py-5">
+    <i class="fas fa-book-open fa-4x text-muted mb-3"></i>
+    <h4>You haven't enrolled in any courses yet</h4>
+    <p class="text-muted">Explore our course catalog and start learning today!</p>
+    <a href="{{ url_for('courses') }}" class="btn btn-primary">Browse Courses</a>
+</div>
+{% endif %}
+{% endblock %}

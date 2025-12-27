@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - LearnHub{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Admin Dashboard</h1>
+
+<!-- Stats Cards -->
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="card text-white bg-primary">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="card-title">Total Users</h5>
+                        <h2 class="mb-0">{{ users_count }}</h2>
+                    </div>
+                    <i class="fas fa-users fa-3x"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card text-white bg-success">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="card-title">Total Courses</h5>
+                        <h2 class="mb-0">{{ courses_count }}</h2>
+                    </div>
+                    <i class="fas fa-book fa-3x"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card text-white bg-warning">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="card-title">Total Enrollments</h5>
+                        <h2 class="mb-0">{{ enrollments_count }}</h2>
+                    </div>
+                    <i class="fas fa-graduation-cap fa-3x"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Admin Actions -->
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Quick Actions</h5>
+            </div>
+            <div class="card-body">
+                <div class="list-group">
+                    <a href="{{ url_for('add_course') }}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-plus-circle me-2"></i> Add New Course
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action">
+                        <i class="fas fa-user-plus me-2"></i> Add New User
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action">
+                        <i class="fas fa-chart-bar me-2"></i> View Analytics
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action">
+                        <i class="fas fa-cog me-2"></i> System Settings
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Recent Activity</h5>
+            </div>
+            <div class="card-body">
+                <div class="list-group">
+                    <div class="list-group-item">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1">New user registered</h6>
+                            <small>5 minutes ago</small>
+                        </div>
+                        <p class="mb-1">Username: new_student123</p>
+                    </div>
+                    <div class="list-group-item">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1">Course enrollment</h6>
+                            <small>2 hours ago</small>
+                        </div>
+                        <p class="mb-1">Python Programming Basics (2 new enrollments)</p>
+                    </div>
+                    <div class="list-group-item">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1">System update</h6>
+                            <small>Yesterday</small>
+                        </div>
+                        <p class="mb-1">Platform updated to version 1.2.0</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Instructions -->
+<div class="card mt-4">
+    <div class="card-body">
+        <h5 class="card-title">Admin Instructions</h5>
+        <ul>
+            <li>Use the "Add New Course" option to create new courses</li>
+            <li>Monitor user registrations and enrollments</li>
+            <li>Add course content using the Course Management section</li>
+            <li>Generate reports using the Analytics section</li>
+        </ul>
+        <div class="alert alert-info">
+            <strong>Note:</strong> Admin credentials: username: <code>admin</code>, password: <code>admin123</code>
+        </div>
+    </div>
+</div>
+{% endblock %}

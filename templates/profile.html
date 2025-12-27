@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}My Profile - LearnHub{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body text-center">
+                <div class="mb-3">
+                    <i class="fas fa-user-circle fa-5x text-primary"></i>
+                </div>
+                <h4>{{ user.username }}</h4>
+                <p class="text-muted">{{ user.email }}</p>
+                <span class="badge bg-{% if user.is_admin %}danger{% else %}success{% endif %}">
+                    {% if user.is_admin %}Administrator{% else %}Student{% endif %}
+                </span>
+            </div>
+        </div>
+        
+        <div class="card mt-4">
+            <div class="card-body">
+                <h5>Account Stats</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2">
+                        <i class="fas fa-book me-2"></i>
+                        <strong>Courses Enrolled:</strong> {{ enrolled_courses_count }}
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-calendar me-2"></i>
+                        <strong>Member Since:</strong> {{ user.created_at.strftime('%B %Y') }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Account Information</h5>
+            </div>
+            <div class="card-body">
+                <form>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Username</label>
+                            <input type="text" class="form-control" value="{{ user.username }}" readonly>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Email Address</label>
+                            <input type="email" class="form-control" value="{{ user.email }}" readonly>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Account Type</label>
+                            <input type="text" class="form-control" 
+                                   value="{% if user.is_admin %}Administrator{% else %}Student{% endif %}" readonly>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Registration Date</label>
+                            <input type="text" class="form-control" 
+                                   value="{{ user.created_at.strftime('%d %B, %Y') }}" readonly>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Contact administrator to update account information.
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5 class="mb-0">Learning Progress</h5>
+            </div>
+            <div class="card-body">
+                <div class="progress mb-3" style="height: 25px;">
+                    <div class="progress-bar" role="progressbar" style="width: 65%;" 
+                         aria-valuenow="65" aria-valuemin="0" aria-valuemax="100">
+                        65% Complete
+                    </div>
+                </div>
+                <p class="text-muted">You've completed 65% of your enrolled courses. Keep learning!</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
