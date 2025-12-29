@@ -1,0 +1,300 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - CogniLearn Pro{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row mb-5">
+        <div class="col-12">
+            <h1 class="display-4 fw-bold mb-3">Welcome back, {{ user.username }}!</h1>
+            <p class="lead text-muted">Track your learning progress and continue your journey.</p>
+        </div>
+    </div>
+    
+    <!-- Stats Overview -->
+    <div class="row mb-5">
+        <div class="col-md-3 mb-4">
+            <div class="stats-card">
+                <div class="stats-number">{{ enrolled_courses|length }}</div>
+                <div class="stats-label">Enrolled Courses</div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-4">
+            <div class="stats-card">
+                <div class="stats-number">{{ avg_progress|int }}%</div>
+                <div class="stats-label">Average Progress</div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-4">
+            <div class="stats-card">
+                <div class="stats-number">
+                    {% set completed = 0 %}
+                    {% for course in enrolled_courses %}
+                        {% if course.progress == 100 %}
+                            {% set completed = completed + 1 %}
+                        {% endif %}
+                    {% endfor %}
+                    {{ completed }}
+                </div>
+                <div class="stats-label">Completed Courses</div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-4">
+            <div class="stats-card">
+                <div class="stats-number">
+                    {% set hours = 0 %}
+                    {% for course in enrolled_courses %}
+                        {% set hours = hours + course.duration %}
+                    {% endfor %}
+                    {{ hours }}
+                </div>
+                <div class="stats-label">Learning Hours</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Overall Progress -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold mb-3">Overall Learning Progress</h5>
+                    <div class="progress mb-2">
+                        <div class="progress-bar overall-progress" role="progressbar" data-progress="{{ avg_progress }}">
+                            {{ avg_progress }}%
+                        </div>
+                    </div>
+                    <p class="text-muted mb-0">Keep up the great work! You're making excellent progress.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Enrolled Courses -->
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3 class="fw-bold mb-0">My Courses</h3>
+                <a href="{{ url_for('courses') }}" class="btn btn-primary">
+                    <i class="bi bi-plus-circle me-2"></i>Add New Course
+                </a>
+            </div>
+            
+            {% if enrolled_courses %}
+            <div class="row">
+                {% for course in enrolled_courses %}
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card course-card h-100">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <div>
+                                    <h5 class="fw-bold mb-2">{{ course.title }}</h5>
+                                    <span class="badge bg-primary mb-2">{{ course.category }}</span>
+                                    <span class="badge bg-warning">{{ course.level }}</span>
+                                </div>
+                            </div>
+                            
+                            <p class="text-muted mb-3">{{ course.description[:120] }}{% if course.description|length > 120 %}...{% endif %}</p>
+                            
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <small class="text-muted">Progress</small>
+                                    <small class="fw-bold text-primary">{{ course.progress }}%</small>
+                                </div>
+                                <div class="progress course-progress-container">
+                                    <div class="progress-bar" role="progressbar" data-progress="{{ course.progress }}">
+                                        <span class="visually-hidden">{{ course.progress }}% Complete</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">
+                                    <i class="bi bi-clock me-1"></i>{{ course.duration }}h
+                                </small>
+                                <div class="btn-group">
+                                    <a href="{{ url_for('course_detail', course_id=course.id) }}" class="btn btn-sm btn-outline-primary">
+                                        Continue
+                                    </a>
+                                    <button type="button" class="btn btn-sm btn-outline-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown">
+                                        <span class="visually-hidden">Update Progress</span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <form method="POST" action="{{ url_for('update_progress', enrollment_id=course.enrollment_id) }}">
+                                                <input type="hidden" name="progress" value="25">
+                                                <button type="submit" class="dropdown-item">25% Complete</button>
+                                            </form>
+                                        </li>
+                                        <li>
+                                            <form method="POST" action="{{ url_for('update_progress', enrollment_id=course.enrollment_id) }}">
+                                                <input type="hidden" name="progress" value="50">
+                                                <button type="submit" class="dropdown-item">50% Complete</button>
+                                            </form>
+                                        </li>
+                                        <li>
+                                            <form method="POST" action="{{ url_for('update_progress', enrollment_id=course.enrollment_id) }}">
+                                                <input type="hidden" name="progress" value="75">
+                                                <button type="submit" class="dropdown-item">75% Complete</button>
+                                            </form>
+                                        </li>
+                                        <li>
+                                            <form method="POST" action="{{ url_for('update_progress', enrollment_id=course.enrollment_id) }}">
+                                                <input type="hidden" name="progress" value="100">
+                                                <button type="submit" class="dropdown-item">100% Complete</button>
+                                            </form>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center py-5">
+                    <i class="bi bi-book text-muted mb-3" style="font-size: 3rem;"></i>
+                    <h5 class="fw-bold mb-3">No Courses Enrolled Yet</h5>
+                    <p class="text-muted mb-4">Start your learning journey by enrolling in courses.</p>
+                    <a href="{{ url_for('courses') }}" class="btn btn-primary btn-lg">
+                        <i class="bi bi-search me-2"></i>Browse Courses
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    <!-- Recommended Courses -->
+    {% if featured_courses %}
+    <div class="row mt-5">
+        <div class="col-12">
+            <h3 class="fw-bold mb-4">Recommended for You</h3>
+            <div class="row">
+                {% for course in featured_courses %}
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-img-wrapper">
+                            <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" class="card-img-top" alt="{{ course.title }}">
+                        </div>
+                        <div class="card-body">
+                            <h5 class="fw-bold mb-2">{{ course.title }}</h5>
+                            <p class="text-muted mb-3">{{ course.description[:80] }}{% if course.description|length > 80 %}...{% endif %}</p>
+                            <div class="d-grid">
+                                <a href="{{ url_for('course_detail', course_id=course.id) }}" class="btn btn-outline-primary">
+                                    View Course
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Progress Update Toast -->
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="successToast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                <i class="bi bi-check-circle me-2"></i>Progress updated successfully!
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+        </div>
+    </div>
+</div>
+
+<style>
+    .stats-card {
+        background: white;
+        border-radius: 12px;
+        padding: 1.5rem;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        border-top: 4px solid #4361ee;
+        text-align: center;
+        transition: transform 0.3s ease;
+    }
+    
+    .stats-card:hover {
+        transform: translateY(-5px);
+    }
+    
+    .stats-number {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #4361ee;
+        line-height: 1;
+        margin-bottom: 0.5rem;
+    }
+    
+    .stats-label {
+        color: #64748b;
+        font-size: 0.875rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-weight: 500;
+    }
+    
+    .progress {
+        height: 20px;
+        border-radius: 10px;
+        background-color: #e9ecef;
+    }
+    
+    .progress.course-progress-container {
+        height: 8px;
+    }
+    
+    .progress-bar {
+        background: linear-gradient(90deg, #4361ee, #4cc9f0);
+        border-radius: 10px;
+        transition: width 0.6s ease;
+    }
+    
+    .card-img-wrapper {
+        height: 150px;
+        overflow: hidden;
+    }
+    
+    .card-img-wrapper img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Set overall progress bar width
+        const overallProgress = document.querySelector('.overall-progress');
+        if (overallProgress) {
+            const progressValue = overallProgress.getAttribute('data-progress');
+            overallProgress.style.width = progressValue + '%';
+        }
+        
+        // Set individual course progress bar widths
+        const progressBars = document.querySelectorAll('.progress-bar[data-progress]');
+        progressBars.forEach(function(bar) {
+            if (!bar.classList.contains('overall-progress')) {
+                const progressValue = bar.getAttribute('data-progress');
+                bar.style.width = progressValue + '%';
+            }
+        });
+        
+        // Show toast if there's a success message
+        const successMessages = document.querySelectorAll('.alert-success');
+        if (successMessages.length > 0) {
+            const toastEl = document.getElementById('successToast');
+            if (toastEl) {
+                const toast = new bootstrap.Toast(toastEl);
+                toast.show();
+            }
+        }
+    });
+</script>
+{% endblock %}

@@ -1,76 +1,310 @@
 {% extends "base.html" %}
 
-{% block title %}Home - LearnHub{% endblock %}
+{% block title %}Enterprise Learning Platform | CogniLearn Pro{% endblock %}
 
 {% block content %}
 <!-- Hero Section -->
-<div class="hero-section text-center">
-    <h1 class="display-4 fw-bold">Welcome to LearnHub</h1>
-    <p class="lead">Your gateway to knowledge and skill development</p>
-    {% if not current_user.is_authenticated %}
-    <a href="{{ url_for('register') }}" class="btn btn-light btn-lg mt-3">Start Learning Free</a>
-    {% else %}
-    <a href="{{ url_for('courses') }}" class="btn btn-light btn-lg mt-3">Browse Courses</a>
-    {% endif %}
-</div>
+<section class="hero-section text-white py-5">
+    <div class="container py-5 position-relative" style="z-index: 1;">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-5 mb-lg-0">
+                <h1 class="display-4 fw-bold mb-4">
+                    Transform Your Workforce with
+                    <span class="text-warning">AI-Powered Learning</span>
+                </h1>
+                <p class="lead mb-4 opacity-90">
+                    Enterprise-grade learning platform trusted by Fortune 500 companies. 
+                    Elevate skills, drive innovation, and future-proof your organization.
+                </p>
+                <div class="d-flex flex-wrap gap-3 mb-4">
+                    {% if not user %}
+                    <a href="{{ url_for('register') }}" class="btn btn-light btn-lg px-4">
+                        <i class="bi bi-rocket-takeoff me-2"></i>Start Free Trial
+                    </a>
+                    <a href="{{ url_for('courses') }}" class="btn btn-outline-light btn-lg px-4">
+                        <i class="bi bi-play-circle me-2"></i>Browse Courses
+                    </a>
+                    {% else %}
+                    <a href="{{ url_for('courses') }}" class="btn btn-light btn-lg px-4">
+                        <i class="bi bi-search me-2"></i>Explore Catalog
+                    </a>
+                    <a href="{{ url_for('dashboard') }}" class="btn btn-outline-light btn-lg px-4">
+                        <i class="bi bi-speedometer2 me-2"></i>My Dashboard
+                    </a>
+                    {% endif %}
+                </div>
+                
+                <div class="row mt-4">
+                    <div class="col-6 col-md-3 mb-3">
+                        <div class="text-center">
+                            <h3 class="fw-bold mb-1">{{ stats.total_courses }}+</h3>
+                            <p class="small opacity-75 mb-0">Courses</p>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3 mb-3">
+                        <div class="text-center">
+                            <h3 class="fw-bold mb-1">{{ stats.total_students }}+</h3>
+                            <p class="small opacity-75 mb-0">Students</p>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3 mb-3">
+                        <div class="text-center">
+                            <h3 class="fw-bold mb-1">{{ stats.total_enrollments }}+</h3>
+                            <p class="small opacity-75 mb-0">Enrollments</p>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3 mb-3">
+                        <div class="text-center">
+                            <h3 class="fw-bold mb-1">500+</h3>
+                            <p class="small opacity-75 mb-0">Companies</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6">
+                <div class="card border-0 shadow-lg overflow-hidden">
+                    <div class="card-header bg-primary text-white py-3">
+                        <h5 class="mb-0"><i class="bi bi-graph-up me-2"></i>Learning Dashboard</h5>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="row g-3 mb-4">
+                            <div class="col-6">
+                                <div class="bg-light p-3 rounded text-center">
+                                    <div class="text-muted small mb-1">Active Courses</div>
+                                    <div class="h4 fw-bold text-primary mb-0">12</div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="bg-light p-3 rounded text-center">
+                                    <div class="text-muted small mb-1">Completion Rate</div>
+                                    <div class="h4 fw-bold text-success mb-0">94%</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="text-muted">Learning Progress</span>
+                                <span class="fw-bold text-primary">78%</span>
+                            </div>
+                            <div class="progress" style="height: 10px;">
+                                <div class="progress-bar" role="progressbar" style="width: 78%;"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center mt-4">
+                            <div class="d-flex justify-content-center gap-2">
+                                <span class="badge bg-primary">AI Recommended</span>
+                                <span class="badge bg-success">Live Sessions</span>
+                                <span class="badge bg-warning">Certifications</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
-<!-- Features -->
-<div class="row row-cols-1 row-cols-md-3 g-4 mb-5">
-    <div class="col">
-        <div class="card h-100 text-center border-0 shadow-sm">
-            <div class="card-body">
-                <i class="fas fa-video fa-3x text-primary mb-3"></i>
-                <h5 class="card-title">Video Courses</h5>
-                <p class="card-text">Learn from high-quality video lectures by expert instructors.</p>
+<!-- Features Section -->
+<section class="py-5 bg-light" id="features">
+    <div class="container py-5">
+        <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold mb-3">Built for <span class="text-gradient">Enterprise Excellence</span></h2>
+            <p class="lead text-muted">Advanced features designed for modern organizations</p>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="rounded-circle bg-primary bg-opacity-10 text-primary d-inline-flex align-items-center justify-content-center mb-3" style="width: 70px; height: 70px;">
+                            <i class="bi bi-cpu-fill fs-3"></i>
+                        </div>
+                        <h5 class="fw-bold mb-3">AI Learning Paths</h5>
+                        <p class="text-muted">Personalized curriculum recommendations powered by machine learning algorithms.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="rounded-circle bg-success bg-opacity-10 text-success d-inline-flex align-items-center justify-content-center mb-3" style="width: 70px; height: 70px;">
+                            <i class="bi bi-bar-chart-fill fs-3"></i>
+                        </div>
+                        <h5 class="fw-bold mb-3">Skill Analytics</h5>
+                        <p class="text-muted">Comprehensive dashboards tracking skill development and competency gaps.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="rounded-circle bg-warning bg-opacity-10 text-warning d-inline-flex align-items-center justify-content-center mb-3" style="width: 70px; height: 70px;">
+                            <i class="bi bi-people-fill fs-3"></i>
+                        </div>
+                        <h5 class="fw-bold mb-3">Team Management</h5>
+                        <p class="text-muted">Advanced tools for managing learning programs across departments.</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    <div class="col">
-        <div class="card h-100 text-center border-0 shadow-sm">
-            <div class="card-body">
-                <i class="fas fa-certificate fa-3x text-success mb-3"></i>
-                <h5 class="card-title">Certificates</h5>
-                <p class="card-text">Earn certificates upon course completion to showcase your skills.</p>
-            </div>
-        </div>
-    </div>
-    <div class="col">
-        <div class="card h-100 text-center border-0 shadow-sm">
-            <div class="card-body">
-                <i class="fas fa-laptop-code fa-3x text-warning mb-3"></i>
-                <h5 class="card-title">Hands-on Projects</h5>
-                <p class="card-text">Apply your knowledge with practical projects and assignments.</p>
-            </div>
-        </div>
-    </div>
-</div>
+</section>
 
 <!-- Featured Courses -->
-<h2 class="mb-4">Featured Courses</h2>
-<div class="row row-cols-1 row-cols-md-3 g-4">
-    {% for course in courses %}
-    <div class="col">
-        <div class="card course-card h-100">
-            <div class="card-body">
-                <span class="badge bg-primary category-badge">{{ course.category }}</span>
-                <h5 class="card-title mt-2">{{ course.title }}</h5>
-                <p class="card-text">{{ course.description[:100] }}...</p>
-                <p class="text-muted"><small>By {{ course.instructor.username }}</small></p>
+<section class="py-5" id="courses">
+    <div class="container py-5">
+        <div class="d-flex justify-content-between align-items-center mb-5">
+            <div>
+                <h2 class="display-5 fw-bold mb-2">Featured <span class="text-gradient">Learning Paths</span></h2>
+                <p class="lead text-muted">Curated by industry experts and thought leaders</p>
             </div>
-            <div class="card-footer bg-transparent">
-                <a href="{{ url_for('course_detail', course_id=course.id) }}" class="btn btn-outline-primary btn-sm">View Course</a>
+            <a href="{{ url_for('courses') }}" class="btn btn-outline-primary btn-lg">
+                View All <i class="bi bi-arrow-right ms-2"></i>
+            </a>
+        </div>
+        
+        <div class="row g-4">
+            {% for course in featured_courses %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card course-card border-0 shadow-sm h-100">
+                    <div class="position-relative">
+                        <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" 
+                             class="card-img-top" alt="{{ course.title }}" style="height: 200px; object-fit: cover;">
+                        <span class="badge bg-primary position-absolute top-0 end-0 m-3">{{ course.category }}</span>
+                        <span class="badge bg-warning position-absolute top-0 start-0 m-3">{{ course.level }}</span>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="fw-bold mb-2">{{ course.title }}</h5>
+                        <p class="text-muted mb-3">{{ course.description[:100] }}...</p>
+                        
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div>
+                                <i class="bi bi-clock text-muted me-1"></i>
+                                <small class="text-muted">{{ course.duration }} hours</small>
+                            </div>
+                            <div>
+                                <i class="bi bi-person-circle text-muted me-1"></i>
+                                <small class="text-muted">{{ course.instructor }}</small>
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid">
+                            <a href="{{ url_for('course_detail', course_id=course.id) }}" class="btn btn-primary">
+                                <i class="bi bi-eye me-2"></i>View Course
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials -->
+<section class="py-5 bg-light" id="testimonials">
+    <div class="container py-5">
+        <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold mb-3">Trusted by <span class="text-gradient">Industry Leaders</span></h2>
+            <p class="lead text-muted">See what executives say about our platform</p>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <img src="https://i.pravatar.cc/60?img=1" class="rounded-circle me-3" alt="Avatar">
+                            <div>
+                                <h6 class="fw-bold mb-0">Sarah Johnson</h6>
+                                <small class="text-muted">CTO, TechCorp Inc.</small>
+                            </div>
+                        </div>
+                        <p class="mb-0">"CogniLearn Pro transformed our learning culture. Engagement rates increased by 300%."</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <img src="https://i.pravatar.cc/60?img=2" class="rounded-circle me-3" alt="Avatar">
+                            <div>
+                                <h6 class="fw-bold mb-0">Michael Chen</h6>
+                                <small class="text-muted">Head of L&D, GlobalBank</small>
+                            </div>
+                        </div>
+                        <p class="mb-0">"The analytics and reporting capabilities are unmatched. Our ROI was evident within months."</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <img src="https://i.pravatar.cc/60?img=3" class="rounded-circle me-3" alt="Avatar">
+                            <div>
+                                <h6 class="fw-bold mb-0">Jessica Williams</h6>
+                                <small class="text-muted">VP HR, Retail Giant</small>
+                            </div>
+                        </div>
+                        <p class="mb-0">"Implementation was seamless. The platform scaled perfectly with our 10,000+ employees."</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    {% endfor %}
-</div>
+</section>
 
-<!-- Call to Action -->
-<div class="row mt-5">
-    <div class="col-12 text-center">
-        <h3>Ready to start learning?</h3>
-        <p class="lead">Join thousands of students already learning on LearnHub</p>
-        <a href="{{ url_for('courses') }}" class="btn btn-primary btn-lg">Explore All Courses</a>
+<!-- CTA Section -->
+<section class="py-5 bg-primary text-white" id="cta">
+    <div class="container py-5">
+        <div class="row justify-content-center text-center">
+            <div class="col-lg-8">
+                <h2 class="display-5 fw-bold mb-4">Ready to Transform Your Learning Ecosystem?</h2>
+                <p class="lead mb-5 opacity-90">Join 500+ enterprises already revolutionizing their learning and development.</p>
+                <div class="d-flex flex-wrap gap-3 justify-content-center">
+                    {% if not user %}
+                    <a href="{{ url_for('register') }}" class="btn btn-light btn-lg px-5">
+                        <i class="bi bi-rocket-takeoff me-2"></i>Start Free Trial
+                    </a>
+                    <a href="{{ url_for('courses') }}" class="btn btn-outline-light btn-lg px-5">
+                        <i class="bi bi-play-circle me-2"></i>View Demo
+                    </a>
+                    {% else %}
+                    <a href="{{ url_for('courses') }}" class="btn btn-light btn-lg px-5">
+                        <i class="bi bi-plus-circle me-2"></i>Add More Courses
+                    </a>
+                    <a href="{{ url_for('dashboard') }}" class="btn btn-outline-light btn-lg px-5">
+                        <i class="bi bi-graph-up me-2"></i>View Progress
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
     </div>
-</div>
+</section>
+
+<style>
+    .hero-section {
+        background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+    }
+    
+    @media (max-width: 768px) {
+        .hero-section {
+            padding: 3rem 0 !important;
+        }
+        
+        .display-4 {
+            font-size: 2.5rem;
+        }
+    }
+</style>
 {% endblock %}

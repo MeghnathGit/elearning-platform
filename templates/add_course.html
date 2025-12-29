@@ -1,45 +1,25 @@
 {% extends "base.html" %}
 
-{% block title %}Add Course - Admin{% endblock %}
-
 {% block content %}
 <div class="row justify-content-center">
     <div class="col-md-8">
         <div class="card">
-            <div class="card-header">
-                <h4 class="mb-0">Add New Course</h4>
-            </div>
-            <div class="card-body">
+            <div class="card-body p-5">
+                <h2 class="text-center mb-4">Add New Course</h2>
                 <form method="POST" action="{{ url_for('add_course') }}">
                     <div class="mb-3">
-                        <label for="title" class="form-label">Course Title</label>
-                        <input type="text" class="form-control" id="title" name="title" required>
+                        <label>Course Title</label>
+                        <input type="text" name="title" class="form-control" required>
                     </div>
-                    
                     <div class="mb-3">
-                        <label for="category" class="form-label">Category</label>
-                        <select class="form-select" id="category" name="category" required>
-                            <option value="">Select Category</option>
-                            <option value="Programming">Programming</option>
-                            <option value="Web Development">Web Development</option>
-                            <option value="Data Science">Data Science</option>
-                            <option value="Cloud Computing">Cloud Computing</option>
-                            <option value="Database">Database</option>
-                            <option value="Artificial Intelligence">Artificial Intelligence</option>
-                            <option value="Cybersecurity">Cybersecurity</option>
-                            <option value="Mobile Development">Mobile Development</option>
-                        </select>
+                        <label>Description</label>
+                        <textarea name="description" class="form-control" rows="4" required></textarea>
                     </div>
-                    
                     <div class="mb-3">
-                        <label for="description" class="form-label">Course Description</label>
-                        <textarea class="form-control" id="description" name="description" rows="5" required></textarea>
+                        <label>Category</label>
+                        <input type="text" name="category" class="form-control" required>
                     </div>
-                    
-                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                        <a href="{{ url_for('admin') }}" class="btn btn-secondary me-md-2">Cancel</a>
-                        <button type="submit" class="btn btn-primary">Add Course</button>
-                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Add Course</button>
                 </form>
             </div>
         </div>

@@ -1,0 +1,8 @@
+[phases.setup]
+cmds = ["pip install -r requirements.txt"]
+
+[phases.install]
+cmds = ["python -c 'import app; app.init_db()'"]
+
+[start]
+cmd = "gunicorn --bind 0.0.0.0:$PORT --workers 2 --threads 4 --timeout 120 app:app"

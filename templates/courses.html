@@ -1,57 +1,86 @@
 {% extends "base.html" %}
 
-{% block title %}All Courses - LearnHub{% endblock %}
+{% block title %}Courses - CogniLearn Pro{% endblock %}
 
 {% block content %}
-<h1 class="mb-4">All Courses</h1>
-
-<!-- Search and Filter -->
-<div class="row mb-4">
-    <div class="col-md-4">
-        <input type="text" class="form-control" placeholder="Search courses...">
+<div class="container py-5">
+    <div class="row mb-5">
+        <div class="col-12">
+            <h1 class="display-4 fw-bold mb-3">All Courses</h1>
+            <p class="lead text-muted">Browse our collection of courses</p>
+        </div>
     </div>
-    <div class="col-md-4">
-        <select class="form-select">
-            <option selected>All Categories</option>
-            <option value="programming">Programming</option>
-            <option value="web">Web Development</option>
-            <option value="data">Data Science</option>
-            <option value="cloud">Cloud Computing</option>
-        </select>
-    </div>
-</div>
-
-<!-- Courses Grid -->
-<div class="row row-cols-1 row-cols-md-3 g-4">
-    {% for course in courses %}
-    <div class="col">
-        <div class="card course-card h-100">
-            <div class="card-body">
-                <span class="badge bg-primary category-badge">{{ course.category }}</span>
-                <h5 class="card-title mt-2">{{ course.title }}</h5>
-                <p class="card-text">{{ course.description[:150] }}...</p>
-                <div class="d-flex justify-content-between align-items-center">
-                    <span class="text-muted"><small>By {{ course.instructor.username }}</small></span>
-                    <span class="badge bg-secondary">{{ course.enrollments|length }} enrolled</span>
-                </div>
-            </div>
-            <div class="card-footer bg-transparent">
-                <div class="d-flex justify-content-between">
-                    <a href="{{ url_for('course_detail', course_id=course.id) }}" class="btn btn-outline-primary btn-sm">View Details</a>
-                    {% if course.id in enrolled_course_ids %}
-                    <span class="badge bg-success">Enrolled</span>
-                    {% endif %}
+    
+    <!-- Filters -->
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Category</label>
+                            <select class="form-select" onchange="window.location.href=this.value">
+                                <option value="{{ url_for('courses') }}">All Categories</option>
+                                {% for category in categories %}
+                                <option value="{{ url_for('courses', category=category.category) }}" {% if request.args.get('category') == category.category %}selected{% endif %}>
+                                    {{ category.category }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Level</label>
+                            <select class="form-select" onchange="window.location.href=this.value">
+                                <option value="{{ url_for('courses') }}">All Levels</option>
+                                {% for level in levels %}
+                                <option value="{{ url_for('courses', level=level.level) }}" {% if request.args.get('level') == level.level %}selected{% endif %}>
+                                    {{ level.level }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    {% endfor %}
+    
+    <!-- Courses Grid -->
+    <div class="row">
+        {% for course in courses %}
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <span class="badge bg-primary mb-2">{{ course.category }}</span>
+                    <h5 class="card-title fw-bold mb-2">{{ course.title }}</h5>
+                    <p class="card-text text-muted mb-3">{{ course.description[:150] }}{% if course.description|length > 150 %}...{% endif %}</p>
+                    
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <small class="text-muted">
+                            <i class="bi bi-clock me-1"></i>{{ course.duration }}h
+                        </small>
+                        <span class="badge bg-warning">{{ course.level }}</span>
+                    </div>
+                    
+                    <div class="d-grid">
+                        <a href="{{ url_for('course_detail', course_id=course.id) }}" class="btn btn-primary">
+                            View Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body text-center py-5">
+                    <i class="bi bi-search text-muted mb-3" style="font-size: 3rem;"></i>
+                    <h5 class="fw-bold mb-3">No Courses Found</h5>
+                    <p class="text-muted">Try changing your filters or check back later.</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
 </div>
-
-{% if not courses %}
-<div class="text-center py-5">
-    <h4>No courses available yet</h4>
-    <p class="text-muted">Check back soon for new courses!</p>
-</div>
-{% endif %}
 {% endblock %}
