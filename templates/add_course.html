@@ -1,26 +1,73 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="row justify-content-center">
-    <div class="col-md-8">
-        <div class="card">
-            <div class="card-body p-5">
-                <h2 class="text-center mb-4">Add New Course</h2>
-                <form method="POST" action="{{ url_for('add_course') }}">
-                    <div class="mb-3">
-                        <label>Course Title</label>
-                        <input type="text" name="title" class="form-control" required>
-                    </div>
-                    <div class="mb-3">
-                        <label>Description</label>
-                        <textarea name="description" class="form-control" rows="4" required></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label>Category</label>
-                        <input type="text" name="category" class="form-control" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary w-100">Add Course</button>
-                </form>
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card border-0 shadow-lg">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0"><i class="bi bi-plus-circle me-2"></i>Add New Course</h3>
+                </div>
+                <div class="card-body p-5">
+                    <form method="POST" action="{{ url_for('add_course') }}">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Course Title *</label>
+                            <input type="text" name="title" class="form-control form-control-lg" placeholder="e.g., Python Programming Masterclass" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Description *</label>
+                            <textarea name="description" class="form-control" rows="5" placeholder="Detailed course description..." required></textarea>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Category *</label>
+                                <select name="category" class="form-select" required>
+                                    <option value="">Select Category</option>
+                                    <option value="Programming">Programming</option>
+                                    <option value="Web Development">Web Development</option>
+                                    <option value="Data Science">Data Science</option>
+                                    <option value="Cloud Computing">Cloud Computing</option>
+                                    <option value="Cybersecurity">Cybersecurity</option>
+                                    <option value="Artificial Intelligence">Artificial Intelligence</option>
+                                    <option value="Business">Business</option>
+                                    <option value="Design">Design</option>
+                                </select>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Instructor</label>
+                                <input type="text" name="instructor" class="form-control" placeholder="e.g., Dr. Alex Johnson" value="Admin">
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Duration (hours)</label>
+                                <input type="number" name="duration" class="form-control" value="40" min="1" max="200">
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Level</label>
+                                <select name="level" class="form-select">
+                                    <option value="Beginner">Beginner</option>
+                                    <option value="Intermediate">Intermediate</option>
+                                    <option value="Advanced">Advanced</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid gap-2 mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="bi bi-check-circle me-2"></i>Add Course
+                            </button>
+                            <a href="{{ url_for('admin') }}" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left me-2"></i>Back to Admin
+                            </a>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

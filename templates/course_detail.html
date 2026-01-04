@@ -1,24 +1,167 @@
 {% extends "base.html" %}
 
+{% block title %}{{ course.title }} - CogniLearn Pro{% endblock %}
+
 {% block content %}
-<div class="card">
-    <div class="card-body">
-        <h1>{{ course.title }}</h1>
-        <p class="text-muted">Category: {{ course.category }}</p>
-        <p>{{ course.description }}</p>
-        
-        {% if is_enrolled %}
-            <div class="alert alert-success">
-                You are enrolled in this course!
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body p-5">
+                    <div class="d-flex justify-content-between align-items-start mb-4">
+                        <div>
+                            <span class="badge bg-primary fs-6 mb-3">{{ course.category }}</span>
+                            <h1 class="display-5 fw-bold mb-3">{{ course.title }}</h1>
+                            <div class="d-flex align-items-center gap-3 mb-4">
+                                <span class="badge bg-warning fs-6">{{ course.level }}</span>
+                                <span class="text-muted">
+                                    <i class="bi bi-clock me-1"></i>{{ course.duration }} hours
+                                </span>
+                                <span class="text-muted">
+                                    <i class="bi bi-person me-1"></i>{{ course.instructor or 'Admin' }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="course-content mb-5">
+                        <h4 class="fw-bold mb-3">Course Description</h4>
+                        <p class="fs-5">{{ course.description }}</p>
+                    </div>
+                    
+                    {% if is_enrolled %}
+                    <div class="alert alert-success border-0 shadow-sm">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-check-circle-fill fs-3 me-3"></i>
+                            <div>
+                                <h5 class="mb-1">You're Enrolled!</h5>
+                                <p class="mb-0">Continue learning from where you left off.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex gap-3 mt-4">
+                        <a href="{{ url_for('my_courses') }}" class="btn btn-primary btn-lg px-4">
+                            <i class="bi bi-list-check me-2"></i>My Courses
+                        </a>
+                        <a href="{{ url_for('dashboard') }}" class="btn btn-outline-primary btn-lg px-4">
+                            <i class="bi bi-speedometer2 me-2"></i>Dashboard
+                        </a>
+                    </div>
+                    {% else %}
+                    <div class="enrollment-section">
+                        {% if user %}
+                        <form action="{{ url_for('enroll', course_id=course.id) }}" method="POST" class="d-inline">
+                            <button type="submit" class="btn btn-primary btn-lg px-5 py-3">
+                                <i class="bi bi-cart-plus me-2"></i>Enroll Now
+                            </button>
+                        </form>
+                        <a href="{{ url_for('courses') }}" class="btn btn-outline-primary btn-lg px-5 py-3">
+                            <i class="bi bi-arrow-left me-2"></i>Back to Courses
+                        </a>
+                        {% else %}
+                        <div class="alert alert-info border-0 shadow-sm">
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-info-circle-fill fs-3 me-3"></i>
+                                <div>
+                                    <h5 class="mb-1">Login Required</h5>
+                                    <p class="mb-0">Please login or register to enroll in this course.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex gap-3">
+                            <a href="{{ url_for('login', next=request.url) }}" class="btn btn-primary btn-lg px-5">
+                                <i class="bi bi-box-arrow-in-right me-2"></i>Login to Enroll
+                            </a>
+                            <a href="{{ url_for('register') }}" class="btn btn-outline-primary btn-lg px-5">
+                                <i class="bi bi-person-plus me-2"></i>Register
+                            </a>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                </div>
             </div>
-            <a href="{{ url_for('my_courses') }}" class="btn btn-primary">Go to My Courses</a>
-        {% else %}
-            {% if user %}
-                <a href="{{ url_for('enroll', course_id=course.id) }}" class="btn btn-primary">Enroll Now</a>
-            {% else %}
-                <a href="{{ url_for('login') }}" class="btn btn-primary">Login to Enroll</a>
-            {% endif %}
-        {% endif %}
+        </div>
+        
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="bi bi-info-circle me-2"></i>Course Details</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span class="text-muted">Category</span>
+                            <span class="fw-bold">{{ course.category }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span class="text-muted">Level</span>
+                            <span class="badge bg-warning">{{ course.level }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span class="text-muted">Duration</span>
+                            <span class="fw-bold">{{ course.duration }} hours</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span class="text-muted">Instructor</span>
+                            <span class="fw-bold">{{ course.instructor or 'Admin' }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span class="text-muted">Added On</span>
+                            <span class="fw-bold">{{ course.created_at[:10] if course.created_at else 'Recently' }}</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0"><i class="bi bi-award me-2"></i>What You'll Get</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled">
+                        <li class="mb-3">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                            Lifetime access to course materials
+                        </li>
+                        <li class="mb-3">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                            Certificate of completion
+                        </li>
+                        <li class="mb-3">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                            Downloadable resources
+                        </li>
+                        <li class="mb-3">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                            Community support
+                        </li>
+                        <li>
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                            Progress tracking
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
+<style>
+    .course-content {
+        background: #f8f9fa;
+        padding: 2rem;
+        border-radius: 10px;
+        border-left: 5px solid #4361ee;
+    }
+    
+    .enrollment-section {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        padding: 2rem;
+        border-radius: 10px;
+        border: 2px dashed #dee2e6;
+    }
+</style>
 {% endblock %}
