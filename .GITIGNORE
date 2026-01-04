@@ -1,32 +1,11 @@
-# Python
 __pycache__/
-*.py[cod]
-*$py.class
-*.so
+*.pyc
+*.pyo
+*.pyd
 .Python
 env/
 venv/
-ENV/
-env.bak/
-venv.bak/
-
-# Database
-*.db
-*.sqlite3
-
-# Environment
-.env
-.env.local
-
-# IDE
 .vscode/
-.idea/
-*.swp
-*.swo
-
-# OS
+database.db
+*.sqlite3
 .DS_Store
-Thumbs.db
-
-# Logs
-*.log

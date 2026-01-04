@@ -1,11 +1,8 @@
 [phases.setup]
-nixPkgs = ["postgresql"]
-
-[phases.install]
 cmds = ["pip install -r requirements.txt"]
 
 [phases.build]
-cmds = ["python -c \"from app import init_db; init_db()\""]
+cmds = ["python -c 'print(\"Build completed\")'"]
 
 [start]
-cmd = "gunicorn --bind 0.0.0.0:$PORT --workers 2 --threads 4 --timeout 120 app:app"
+cmd = "gunicorn --bind 0.0.0.0:$PORT main:app"
