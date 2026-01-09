@@ -2,7 +2,10 @@
 cmds = ["pip install -r requirements.txt"]
 
 [phases.build]
-cmds = ["python -c 'print(\"Build completed\")'"]
+cmds = [
+    "mkdir -p static/css static/js static/images templates",
+    "echo 'Build completed'"
+]
 
 [start]
-cmd = "gunicorn --bind 0.0.0.0:$PORT main:app"
+cmd = "gunicorn --bind 0.0.0.0:$PORT main:app --preload"
